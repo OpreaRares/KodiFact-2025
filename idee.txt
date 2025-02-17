@@ -1,0 +1,8 @@
+
+        ### nume: MathWizard ### wip
+        * platforma interactiva de invatare a matematicii din clasele 10 11
+        * sistem modular
+        * quiz-uri la sfarsitul fiecarui modul si la cerere
+        * ajutor la nevoie legat de matematica
+        * integreaza AI prin intelegerea sursei problemei elevului si sugerarea aprofundarii bazat pe nevoile sale specifice
+
