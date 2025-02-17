@@ -6,3 +6,10 @@
         * ajutor la nevoie legat de matematica
         * integreaza AI prin intelegerea sursei problemei elevului si sugerarea aprofundarii bazat pe nevoile sale specifice
 
+        ## pagini ##
+        - login
+        - dashboard
+        - modul nr#
+        - lectie
+        - help AI
+        - quiz -> rezultat
