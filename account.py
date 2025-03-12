@@ -81,24 +81,30 @@ def main(page: ft.Page):
     if mode == "signup":
         page.title = "Sign Up"
         page.add(
+            ft.ResponsiveRow([
             ft.Column([
+                ft.Row([],height=150),
                 ft.Text("Sign Up", size=24, weight=ft.FontWeight.BOLD),
                 username_field,
                 password_field,
                 ft.ElevatedButton("Sign Up", on_click=sign_up),
                 message
             ], alignment=ft.MainAxisAlignment.CENTER, horizontal_alignment=ft.CrossAxisAlignment.CENTER)
+        ], alignment=ft.MainAxisAlignment.CENTER)
         )
     else:
         page.title = "Sign In"
         page.add(
+            ft.ResponsiveRow([
             ft.Column([
+                ft.Row([],height=150),
                 ft.Text("Sign In", size=24, weight=ft.FontWeight.BOLD),
                 username_field,
                 password_field,
                 ft.ElevatedButton("Sign In", on_click=sign_in),
                 message
             ], alignment=ft.MainAxisAlignment.CENTER, horizontal_alignment=ft.CrossAxisAlignment.CENTER)
+        ], alignment=ft.MainAxisAlignment.CENTER)
         )
 
 
