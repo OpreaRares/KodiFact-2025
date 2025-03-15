@@ -1,7 +1,10 @@
 import flet as ft
+from modules.ai_client import AI
 
 def main(page: ft.Page):
-    page.add(ft.Text(value="Hello, world!"))
+    page.add(ft.Text(value=AI()))
+
+
 
 ft.app(main)
 
