@@ -2,7 +2,7 @@ import flet as ft
 import speech_recognition as sr
 import threading
 
-MIC_INDEX = 2
+MIC_INDEX = 13
 
 
 def recognize_speech(txt_output):
