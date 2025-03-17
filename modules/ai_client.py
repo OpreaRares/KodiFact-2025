@@ -6,7 +6,8 @@ def AI(text: str):
     response = client.models.generate_content(
         model="gemini-2.0-flash",
         ##contents = prompt
-        contents = "Este corect asta " + text
+        contents = "prezinta informatii, pe scurt, asupra urmatorului prompt: " + text
+        #dc e asa de sassy gemini incerc sa ii dau un prompt si imi da ca de ce nu am intrebat adecvat
     )
 
     return response.text
