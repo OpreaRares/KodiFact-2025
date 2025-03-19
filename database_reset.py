@@ -7,4 +7,4 @@ def reset_database():
         os.remove("users.db")
     print("Database has been reset.")
 
-#reset_database()
+reset_database()
