@@ -4,7 +4,7 @@ import threading
 import time
 from modules.ai_client import AI
 
-MIC_INDEX = 2  # se schimba nr bazat pe nr de la microfon. foloseste test.py pt lista
+MIC_INDEX = 1  # se schimba nr bazat pe nr de la microfon. foloseste test.py pt lista
 INTERVAL = 30  # dupa cate secunde trimite inputul la ai
 
 

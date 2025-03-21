@@ -4,6 +4,7 @@ import threading
 from modules.ai_client import AI
 from modules.speechtotext import recognize_speech
 
+
 # Initialize database
 def init_db():
     conn = sqlite3.connect("users.db")
@@ -63,23 +64,23 @@ def main(page: ft.Page):
             "/",
             controls=[
                 ft.Text("KodiFact", size=44, weight=ft.FontWeight.BOLD),
-                ft.ElevatedButton("Sign Up", on_click=lambda e: go_to("signup")),
-                ft.ElevatedButton("Sign In", on_click=lambda e: go_to("signin"))
+                ft.ElevatedButton("Inregistrare", on_click=lambda e: go_to("signup")),
+                ft.ElevatedButton("Conectare", on_click=lambda e: go_to("signin"))
             ],
             horizontal_alignment=ft.CrossAxisAlignment.CENTER,
             vertical_alignment=ft.MainAxisAlignment.CENTER
         )
 
     def signup_view():
-        username_field = ft.TextField(label="Username", width=300)
-        password_field = ft.TextField(label="Password", password=True, width=300)
+        username_field = ft.TextField(label="Nume utilizator", width=300)
+        password_field = ft.TextField(label="Parola", password=True, width=300)
         message = ft.Text()
 
         def sign_up(e):
             username = username_field.value.strip()
             password = password_field.value.strip()
             if not username or not password:
-                message.value = "Both fields are required!"
+                message.value = "Completeaza ambele campuri!"
             else:
                 success, msg = register_user(username, password)
                 message.value = msg
@@ -88,11 +89,11 @@ def main(page: ft.Page):
         return ft.View(
             "/signup",
             controls=[
-                ft.Text("Sign Up", size=24, weight=ft.FontWeight.BOLD),
+                ft.Text("Inregistrare", size=24, weight=ft.FontWeight.BOLD),
                 username_field,
                 password_field,
-                ft.ElevatedButton("Sign Up", on_click=sign_up),
-                ft.ElevatedButton("Back to Main", on_click=lambda e: go_to("main")),
+                ft.ElevatedButton("Inregistrare", on_click=sign_up),
+                ft.ElevatedButton("Inapoi la Pagina Principala", on_click=lambda e: go_to("main")),
                 message
             ],
             horizontal_alignment=ft.CrossAxisAlignment.CENTER,
@@ -100,30 +101,30 @@ def main(page: ft.Page):
         )
 
     def signin_view():
-        username_field = ft.TextField(label="Username", width=300)
-        password_field = ft.TextField(label="Password", password=True, width=300)
+        username_field = ft.TextField(label="Nume utilizator", width=300)
+        password_field = ft.TextField(label="Parola", password=True, width=300)
         message = ft.Text()
 
         def sign_in(e):
             username = username_field.value.strip()
             password = password_field.value.strip()
             if not username or not password:
-                message.value = "Both fields are required!"
+                message.value = "Completeaza ambele campuri!"
             else:
                 if authenticate_user(username, password):
                     go_to("app")  # Redirect to main app after login
                 else:
-                    message.value = "Invalid username or password!"
+                    message.value = "Nume ulilizator sau parola este incorecta!"
             page.update()  # Update the whole page instead of calling message.update()
 
         return ft.View(
             "/signin",
             controls=[
-                ft.Text("Sign In", size=24, weight=ft.FontWeight.BOLD),
+                ft.Text("Conectare", size=24, weight=ft.FontWeight.BOLD),
                 username_field,
                 password_field,
-                ft.ElevatedButton("Sign In", on_click=sign_in),
-                ft.ElevatedButton("Back to Main", on_click=lambda e: go_to("main")),
+                ft.ElevatedButton("Conectare", on_click=sign_in),
+                ft.ElevatedButton("Inapoi la Pagina Principala", on_click=lambda e: go_to("main")),
                 message
             ],
             horizontal_alignment=ft.CrossAxisAlignment.CENTER,
@@ -138,7 +139,7 @@ def main(page: ft.Page):
             thread.daemon = True  # Stops when the app closes
             thread.start()
 
-        start_button = ft.ElevatedButton("Start Listening", on_click=start_listening)
+        start_button = ft.ElevatedButton("Asculta", on_click=start_listening)
         return ft.View("/app", controls=[col, start_button])
 
     page.on_route_change = lambda e: go_to(e.route.strip("/"))
