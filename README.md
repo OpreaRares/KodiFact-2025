@@ -1,2 +1,2 @@
 # davinki2025
-proiect nebunatic davinki AI skibidi
+proiect care foloseste AI si face real-time fact-checking
