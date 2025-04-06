@@ -1,20 +1,16 @@
 import flet as ft
 import speech_recognition as sr
 import threading
-import time
 from modules.ai_client import AI
 
-MIC_INDEX = 1  # se schimba nr bazat pe nr de la microfon. foloseste test.py pt lista
-INTERVAL = 30  # dupa cate secunde trimite inputul la ai
-
+MIC_INDEX = 1  # Change this based on your microphone index
 
 def recognize_speech(column: ft.Column):
     recognizer = sr.Recognizer()
-    speech_buffer = []  # lista de propozitii
-    stop_listening = False  # bool control
+    stop_listening = False
 
     # UI Elements
-    txt_output = ft.TextField(label="Recognized Speech", multiline=True, expand=True, value="")
+    txt_output = ft.TextField(label="Vorbire Recunoscută", multiline=True, expand=True, value="")
     column.controls.clear()
     column.controls.extend([txt_output, ft.ProgressRing()])
     column.update()
@@ -34,41 +30,28 @@ def recognize_speech(column: ft.Column):
                     text = recognizer.recognize_google(audio, language="ro-RO")
                     print(f"Recognized: {text}")
 
-                    # append pt buffer
-                    speech_buffer.append(text)
-
-                    # update cu prop noua
-                    txt_output.value = " ".join(speech_buffer)
+                    # Update recognized text
+                    txt_output.value += text + "\n"
                     column.update()
+
+                    # Send to AI immediately
+                    def ask_ai():
+                        ai_response = AI(text)
+                        column.controls.append(ft.Markdown(
+                            value=ai_response,
+                            selectable=True,
+                            extension_set=ft.MarkdownExtensionSet.GITHUB_WEB,
+                        ))
+                        column.update()
+
+                    # Run AI call in separate thread so UI doesn't freeze
+                    threading.Thread(target=ask_ai, daemon=True).start()
 
             except sr.UnknownValueError:
                 print("Could not understand the audio.")
             except sr.RequestError:
                 print("Could not connect to the Speech API.")
 
-    def process_buffer():
-        """ Sends the collected speech to AI every INTERVAL seconds. """
-        nonlocal stop_listening
-        while not stop_listening:
-            time.sleep(INTERVAL)  # buffer efectiv
-            if speech_buffer:
-                full_text = " ".join(speech_buffer)  # join tot textul si buffer text
-                speech_buffer.clear()  # reset buffer
-
-                # trimite prompt la AI
-                ai_response = AI(full_text)
-                column.controls.append(ft.Markdown(
-                    value=ai_response,
-                    selectable=True,
-                    extension_set=ft.MarkdownExtensionSet.GITHUB_WEB,
-                ))
-                column.update()
-
-    # start speech to text si procesare in 2 threaduri
+    # Start listening thread
     listen_thread = threading.Thread(target=listen, daemon=True)
-    buffer_thread = threading.Thread(target=process_buffer, daemon=True)
-
     listen_thread.start()
-    buffer_thread.start()
-
-#  :)

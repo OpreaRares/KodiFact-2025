@@ -4,6 +4,7 @@ import threading
 from modules.ai_client import AI
 from modules.speechtotext import recognize_speech
 
+systemPrompt = "Numele tau este KodiFact. Esti un program care primeste un text si il verifica si il corecteaza daca informatiile sunt false; daca sunt, le prezinti in forma corecta. Vei primi text incontinuu si trebuie sa legi textele pe care le primesti cu cele precedente ca sa poti prezenta informatii corecte in general la tot ce s-a spus tinand cont de context. Vei prezenta informatiile in scurt. Raspunde la acest mesaj DOAR cu Bun venit la KodiFact."
 
 # Initialize database
 def init_db():
@@ -26,9 +27,9 @@ def register_user(username, password):
     try:
         cursor.execute("INSERT INTO users (username, password) VALUES (?, ?)", (username, password))
         conn.commit()
-        return True, "User registered successfully!"
+        return True, "Utilizatorul s-a înregistrat cu succes!"
     except sqlite3.IntegrityError:
-        return False, "Username already exists!"
+        return False, "Numele de utilizator există deja!"
     finally:
         conn.close()
 
@@ -112,10 +113,10 @@ def main(page: ft.Page):
                 message.value = "Completeaza ambele campuri!"
             else:
                 if authenticate_user(username, password):
-                    go_to("app")  # Redirect to main app after login
+                    go_to("app")
                 else:
                     message.value = "Nume ulilizator sau parola este incorecta!"
-            page.update()  # Update the whole page instead of calling message.update()
+            page.update()
 
         return ft.View(
             "/signin",
@@ -134,12 +135,26 @@ def main(page: ft.Page):
     def app_view():
         col = ft.Column([])
 
+        # Initial message placeholder
+        ai_intro = ft.Text(value="", selectable=True)
+        col.controls.append(ai_intro)
+
+        # Function to call AI with the system prompt when the app opens
+        def load_intro():
+            intro_response = AI(systemPrompt)  # Call with initial greeting
+            ai_intro.value = intro_response  # Update the text with response
+            page.update()
+
+        # Run the above function in a thread
+        threading.Thread(target=load_intro, daemon=True).start()
+
+        # Listening button
         def start_listening(e):
             thread = threading.Thread(target=recognize_speech, args=(col,))
-            thread.daemon = True  # Stops when the app closes
+            thread.daemon = True
             thread.start()
 
-        start_button = ft.ElevatedButton("Asculta", on_click=start_listening)
+        start_button = ft.ElevatedButton("Ascultă", on_click=start_listening)
         return ft.View("/app", controls=[col, start_button])
 
     page.on_route_change = lambda e: go_to(e.route.strip("/"))

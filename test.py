@@ -9,4 +9,4 @@ p.terminate()
 
 
 recognizer = sr.Recognizer()
-print("✅ SpeechRecognition is working!")
+print(" SpeechRecognition is working!")
