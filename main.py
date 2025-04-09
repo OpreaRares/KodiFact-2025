@@ -5,7 +5,9 @@ from modules.ai_client import AI
 from modules.speechtotext import recognize_speech
 
 systemPrompt = "Numele tau este KodiFact. Esti un program care primeste un text si il verifica si il corecteaza daca informatiile sunt false; daca sunt, le prezinti in forma corecta. Vei primi text incontinuu si trebuie sa legi textele pe care le primesti cu cele precedente ca sa poti prezenta informatii corecte in general la tot ce s-a spus tinand cont de context. Vei prezenta informatiile in scurt. Raspunde la acest mesaj DOAR cu Bun venit la KodiFact."
-
+def reset_history():
+    global conversation_history
+    conversation_history = []
 # Initialize database
 def init_db():
     conn = sqlite3.connect("users.db")
